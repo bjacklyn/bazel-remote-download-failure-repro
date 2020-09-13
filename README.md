@@ -61,7 +61,8 @@ If ^ is true then this is the code that looks suspicious to me (comments added b
 ```
   private void succeedAndReset(ChannelHandlerContext ctx) {
     try {
-      succeedAndResetUserPromise();  // this resolves the download promise with internally ends up calling releaseDownloadChannel(ch)
+      succeedAndResetUserPromise();  // this resolves the download promise which internally ends up calling releaseDownloadChannel(ch),
+                                     // which means the channel can be acquired by another thread
     } finally {
       reset(ctx);                    // this conditionally closes the channel if the server requests it closed
     }
