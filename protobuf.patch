@@ -1,0 +1,20 @@
+diff --git a/BUILD b/BUILD
+index 79871d6..9fda712 100644
+--- BUILD
++++ BUILD
+@@ -422,6 +422,7 @@ cc_library(
+     linkopts = LINK_OPTS,
+     visibility = ["//visibility:public"],
+     deps = [":protobuf"],
++    tags = ["no-remote"],
+ )
+ 
+ cc_binary(
+@@ -430,6 +431,7 @@ cc_binary(
+     linkopts = LINK_OPTS,
+     visibility = ["//visibility:public"],
+     deps = [":protoc_lib"],
++    tags = ["no-remote"],
+ )
+ 
+ ################################################################################
