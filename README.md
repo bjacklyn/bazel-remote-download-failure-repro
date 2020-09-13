@@ -55,7 +55,7 @@ Notes:
   - When `--remote_download_minimal` is passed the build simply fails on the linking step, whereas when the flag is not passed bazel prints `WARNING: Reading from Remote Cache: BulkTransferException` but doesn't fail the build. I have heard complaints internally that whenever they see `Remote Cache: BulkTransferException` in their local build they stop getting remote cache hits for the remainder of the build, but I haven't repro'd that (yet?).
 
 
-The bottom line is this bug seems to be caused by a race condition between releasing a channel to the channelPool, and subsequently closing the channel presumably after another thread has acquired it from the pool and tries to use it. That would explain why channelpool allows the channel to be reused (because it hasn't be closed yet at time of release), and could also explain the intermittent nature of the failure (sometimes the releasing thread closes the channel before it is acquired by another thread instead of after?)
+The bottom line is this bug seems to be caused by a race condition between releasing a channel to the channelPool, and subsequently closing the channel presumably after another thread has acquired it from the pool and tries to use it. That would explain why channelpool allows the channel to be reused (because it hasn't be closed yet at time of release/acquire), and could also explain the intermittent nature of the failure (sometimes the releasing thread closes the channel before it is acquired by another thread instead of after?)
 
 If ^ is true then this is the code that looks suspicious to me (comments added by me). Also note that there is `failAndReset()` which follows the same pattern.
 ```
