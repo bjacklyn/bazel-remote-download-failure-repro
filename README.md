@@ -5,7 +5,7 @@ Steps to reproduce:
     - Checkout bazel source at tag: 3.4.1
     - Apply the below change
     - Build bazel `bazel build //src:bazel-dev`
-    - I've provided the `bazel-dev` binary I built locally as well
+    - (Alternatively) I've provided the `bazel-dev` binary I built locally with this change
 ```
 diff --git a/src/main/java/com/google/devtools/build/lib/remote/http/HttpDownloadHandler.java b/src/main/java/com/google/devtools/build/lib/remote/http/HttpDownloadHandler.java
 index 37012aa62a..29396f5e5a 100644
