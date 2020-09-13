@@ -68,3 +68,21 @@ If ^ is true then this is the code that looks suspicious to me (comments added b
     }
   }
 ```
+
+Some more evidence that this seems to be the case: with this very inefficient change that always closes the channel before releasing it, I don't see the error anymore.
+```
+diff --git a/src/main/java/com/google/devtools/build/lib/remote/http/HttpCacheClient.java b/src/main/java/com/google/devtools/build/lib/remote/http/HttpCacheClient.java
+index 65ff6ab6b3..88404fd012 100644
+--- a/src/main/java/com/google/devtools/build/lib/remote/http/HttpCacheClient.java
++++ b/src/main/java/com/google/devtools/build/lib/remote/http/HttpCacheClient.java
+@@ -430,6 +430,10 @@ public final class HttpCacheClient implements RemoteCacheClient {
+         // should have been removed.
+       }
+     }
++
++    ChannelFuture cf = ch.close();
++    cf.syncUninterruptibly();
++
+     channelPool.release(ch);
+   }
+```
